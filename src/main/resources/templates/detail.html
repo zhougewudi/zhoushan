@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>文化教育</title>
+</head>
+<script th:src="@{/js/modernizr.min.js}" type="text/javascript"></script>
+
+
+
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/detail.css}" />
+<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+<style>
+
+    #web_bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 1000px;
+        z-index: -10;
+        zoom: 1;
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center 0;
+    }
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    /*.main{*/
+    /*    background-image: url(../images/1.png);*/
+    /*    background-size: cover;*/
+    /*    background-position: center;*/
+    /*}*/
+    .search > img{
+        position:relative;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+    }
+    .register > img{
+        position:relative;
+        left:50%;
+        top:50%;
+        transform: translate(-50%,-50%);
+    }
+    footer > .content > a{
+        text-decoration: none;
+        color:black;
+    }
+    footer{
+        width:100%;
+        background-color: #ffffff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+        overflow: hidden;
+    }
+
+    body {
+        background: #f7f7f7;
+    }
+    /*body{*/
+    /*    background-image: url("assets/images/1.jpg");*/
+    /*    background-size: cover;*/
+    /*    background-repeat: no-repeat;*/
+    /*    !*background-position: center;*!*/
+    /*}*/
+
+
+
+</style>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script>
+
+
+    $(function () {
+        var projectName = $("#path").attr("name");
+        var count1 = $("#specialcount").attr('name') * 50;
+        var count2 = $("#notcount").attr('name') * 50;
+        $(".special").hover(function () {
+            $(".special .itemBox").css("height",count1);
+        },function() {
+            $(".special .itemBox").css("height",0);
+        })
+
+        $(".noTheredity").hover(function () {
+            $(".noTheredity .itemBox").css("height",count2);
+        },function() {
+            $(".noTheredity .itemBox").css("height",0);
+        })
+        $(".about").click(function () {
+            alert("随着现代化的不断发展，很多的人忘记了自己所在的地方的习俗和传说等，只记得春节、中秋节等一些放假的节日，以及西方的圣诞节等节日。为了让舟山人更好的了解到舟山的乡土文化习俗等，同时随着互联网的不断发展，越来越多的人选择在网上浏览信息，浏览网页。于是我们项目组决定实现一个关于舟山乡土文化的网站。用来宣传舟山的本地文化、习俗以及舟山传说。从而让更多的舟山人了解舟山乡土文化。同时使用网页的方式也可以让其他的地方的人直接在互联网上访问，从而去了解舟山乡土文化。也是对舟山乡土文化的继承和发展，对于舟山的非物质文化遗产也是很好的传承。");
+        })
+
+        $(".search").click(function () {
+            alert("别点我");
+        })
+        $(".tag").click(function () {
+            window.location.href=projectName + "/detail/" + $(this).attr("id");
+        })
+        $(".register").click(function () {
+            window.location.href=projectName + "/login";
+        })
+        $(".main").click(function () {
+            window.location.href=projectName +"/index";
+        })
+        $(".share").click(function () {
+
+
+            window.location.href=projectName +"/boke";
+        })
+        $(".advice").click(function () {
+            window.location.href=projectName +"/other";
+        })
+
+
+    })
+
+    function randomNum(minNum,maxNum){
+
+        switch(arguments.length){
+            case 1:
+                return parseInt(Math.random()*minNum+1,10);
+                break;
+            case 2:
+                return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                break;
+            default:
+                return 0;
+                break;
+        }
+    }
+    function set() {
+        var a = randomNum(1,7);
+        $("#web_bg").css("background-image","url(../bg/" + a +".jpg)");
+    }
+</script>
+<body onload="set();">
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+<input id="specialcount" type="hidden" th:name="${specialcount}">
+<input id="notcount" type="hidden" th:name="${notcount}">
+<div id="web_bg" ></div>
+<nav>
+    <div class="main" style="text-align: center;line-height: 50px;">
+    <img th:src="@{/images/1.png}" style="width: 95%; vertical-align: middle;">
+</div>
+    <div class="special">
+        <h3>特色文化区</h3>
+        <div class="itemBox">
+            <a th:each="cur:${special}" th:href="${#request.getContextPath()} +'/detail/' + ${cur.id}" th:text="${cur.name}"></a>
+
+
+        </div>
+    </div>
+    <div class="noTheredity">
+        <h3>非遗传区</h3>
+        <div class="itemBox">
+            <a th:each="cur:${noTheredity}" th:href="${#request.getContextPath()}+'/detail/' + ${cur.id}" th:text="${cur.name}"></a>
+        </div>
+    </div>
+    <div class="share">
+        <h3>博客分享</h3>
+    </div>
+    <div class="advice">
+        <h3>友情推荐</h3>
+    </div>
+    <div class="about">
+        <h3>关于</h3>
+    </div>
+    <div class="search" >
+        <img  th:src="@{/images/aaa.png}" height="40%" />
+    </div>
+    <div class="register" >
+        <div shiro:haspermission="user:member" class="itemBox">
+            <a th:href="${#request.getContextPath()} +  '/logout'">退出登陆</a>
+
+        </div>
+        <img shiro:guest th:src="@{/images/bbb.png}" height="40%" />
+        <img id="me" shiro:haspermission="user:member"  th:src="${#request.getContextPath()} + ${logo}" style="width:50%;border-radius: 50px;" />
+    </div>
+
+</nav>
+
+   <div class="title" style="margin-top: 20px;">
+       <div class="left" >
+           <img  th:src="@{/images/1.png}" alt="" width="100%" style="margin-bottom: 20px;">
+           <div style="overflow: hidden; font-size:60px;width:100%;text-align: center;" th:text=" ${title}"></div>
+
+       </div>
+       <div th:if="${logopath} != 'null'" class="right">
+           <img th:src="${#request.getContextPath()} + ${logopath}" width="100%" alt="">
+       </div>
+   </div>
+    <div class="nav">
+        <div class="nav1">
+           <div class="tag"  th:id="${wenhua[0].id}" th:text="${wenhua[0].name}"></div>
+        </div>
+        <div class="nav2">
+            <div class="tag" th:id="${wenhua[1].id}" th:text="${wenhua[1].name}"></div>
+        </div>
+        <div class="nav3">
+            <div class="tag" th:id="${wenhua[2].id}" th:text="${wenhua[2].name}"></div>
+        </div>
+        <div class="nav4">
+            <div class="tag" th:id="${wenhua[3].id}" th:text="${wenhua[3].name}"></div>
+        </div>
+    </div>
+
+    <div class="nexttitle">
+        <h1 th:text="${title}"></h1>
+    </div>
+
+      <div class="realcontent" style="margin-top: 20px;">
+          <div th:utext="${'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + desc}" style="width: 100%;margin-bottom: 20px;background-color: #ffffff;box-shadow: 0 1px 2px rgba(0, 0, 0, .1);">文字简介<br><br>
+          </div>
+
+          <div style="width: 100%;margin-bottom: 20px;margin-top: 20px;color:white;">图片介绍</div>
+          <div th:each="image :${images}" style="width: 100%;">
+              <img th:src="${#request.getContextPath()} + ${image.path}" width="60%" alt="" style="margin-left: 20%;">
+
+              <div th:utext="${image.desc}" style="text-align: center; margin-top: 20px;margin-bottom: 20px;width: auto;height:auto;background-color: #ffffff;box-shadow: 0 1px 2px rgba(0, 0, 0, .1);">
+
+              </div>
+          </div>
+
+
+
+
+          <div style="width: 100%;margin-bottom: 20px;padding: 0;color:white;">视频介绍</div>
+          <iframe name="content_iframe" marginwidth=0 marginheight=0 width=100% height=auto th:replace="sp::html" frameborder=0></iframe>
+
+          <div style="width: 100%;margin-bottom: 20px;color:white;">友情链接</div>
+
+          <div th:each="href :${hrefs}" style="width: 100%;background: #ffffff; border-bottom: 1px solid rgba(0, 0, 0, .1);">
+              <a style="text-decoration: none;color:black;" th:href="${href.content}" th:text="${href.des}"></a>
+          </div>
+
+      </div>
+
+<div class="status">
+    <i class="icon ion-ios-eye-outline"></i><span th:text="${count} + '次阅读'">134次阅读&nbsp;</span>
+</div>
+
+<footer>
+    <div class="content" align="center">
+        <a href="http://zjzs.wenming.cn/zswh/" target="_blank">舟山文明网</a> |
+
+        <a href="http://www.zhoushan.cn">舟山网</a> |
+
+        <a href="https://www.d1xz.net/wenhua/chengshi/zhoushanwenhua/">舟山文化</a> |
+
+        <a href="http://www.zjfeiyi.cn/news_area/12.html">舟山非遗</a> |
+
+        <a href="http://shop.bytravel.cn/produce/ms/index380_list.html">舟山民俗</a> |
+
+        <a href="http://www.bytravel.cn/view/top10/index380.html">游在舟山</a>
+    </div>
+    <p align="center">
+
+        ©Copyright 2018 海盗侠科技公司版权所有 | 上海ICP备12438170号-4
+
+    </p>
+</footer>
+</body>
+
+</html>

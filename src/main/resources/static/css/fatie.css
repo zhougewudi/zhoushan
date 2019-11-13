@@ -1,0 +1,179 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #f7f7f7;
+    padding-bottom: 100px;
+}
+.lz {
+    width: 80%;
+    height:auto;
+    min-width: 600px;
+    /*max-height: 300px;*/
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    margin-top: 20px;
+    margin-left: 10%;
+    display:flex;
+    overflow: hidden;
+}
+.lz > .left{
+    flex:2;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+}
+.lz > .left > .head{
+    width:100%;
+    height:auto;
+}
+.lz > .right{
+    flex:8;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    padding-bottom: 50px;
+}
+.lz > .right > .title{
+    padding-top : 10px;
+    padding-left:10px;
+    width: 100%;
+    height:60px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+
+}
+.lz > .right > .content{
+    /*padding: 20px;*/
+    height:100%;
+    /*background-color: red;*/
+    /*box-shadow: 0 1px 2px rgba(0, 0, 0, .1);*/
+    margin-left: 10%;
+
+}
+.lz > .right > .content > .main{
+    width:90%;
+    /*margin-left: 5%;*/
+    height:auto;
+    /*background-color: red;*/
+    /*box-shadow: 0 1px 2px rgba(0, 0, 0, .1);*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+.lz > .right > .content > .status{
+    width:90%;
+    /*padding-left:5%;*/
+    height:20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size:15px;
+    /*background-color: red;*/
+    border-top:1px solid rgba(0, 0, 0, .1);
+
+}
+.lz > .right > .content > .gxqm{
+    width:90%;
+    /*padding-left:5%;*/
+    height:20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*background-color: red;*/
+    border-top:1px solid rgba(0, 0, 0, .1);
+    border-bottom:1px solid rgba(0, 0, 0, .1);
+
+}
+.lz > .right > .content > .status > .ll{
+    float:left;
+
+}
+.lz > .right > .content > .status > .rr{
+    float:right;
+
+}
+.lz > .right > .title > .left1{
+    padding-top: 10px;
+    padding-left: 20px;
+    height:100%;
+    float:left;
+    font-size: 20px;
+}
+.lz > .right > .title > .right1{
+    float:right;
+    height:100%;
+    padding-top: 10px;
+    padding-right: 20px;
+}
+.hf {
+    width: 80%;
+    height:auto;
+    min-width: 600px;
+    /*max-height: 300px;*/
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    margin-top: 20px;
+    margin-left: 10%;
+    display:flex;
+    overflow: hidden;
+}
+.hf > .left{
+    flex:2;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+}
+.hf > .left > .head{
+    width:100%;
+    height:auto;
+}
+.hf > .right{
+    flex:8;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    padding-bottom: 50px;
+}
+
+.hf > .right > .content{
+    /*padding: 20px;*/
+    height:100%;
+    /*background-color: red;*/
+    /*box-shadow: 0 1px 2px rgba(0, 0, 0, .1);*/
+    margin-left: 10%;
+
+}
+.hf > .right > .content > .main{
+    width:90%;
+    /*margin-left: 5%;*/
+    height:auto;
+    /*background-color: red;*/
+    /*box-shadow: 0 1px 2px rgba(0, 0, 0, .1);*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+.hf > .right > .content > .status{
+    width:90%;
+    /*padding-left:5%;*/
+    height:20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size:15px;
+    /*background-color: red;*/
+    border-top:1px solid rgba(0, 0, 0, .1);
+
+}
+.hf > .right > .content > .gxqm{
+    width:90%;
+    /*padding-left:5%;*/
+    height:20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*background-color: red;*/
+    border-top:1px solid rgba(0, 0, 0, .1);
+    border-bottom:1px solid rgba(0, 0, 0, .1);
+
+}
+.hf > .right > .content > .status > .ll{
+    float:left;
+
+}
+.hf > .right > .content > .status > .rr{
+    float:right;
+
+}
+.tijiao :hover{
+    cursor: pointer;
+}

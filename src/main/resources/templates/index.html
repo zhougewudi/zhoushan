@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/head.css}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+    <script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /*.main{*/
+        /*    background-image: url(images/1.png);*/
+        /*    background-size: cover;*/
+        /*    background-position: center;*/
+        /*}*/
+        #prev {
+            width: 40px;
+            height: 63px;
+            background: url(images/beijing.png) 0px 0px;
+            position: absolute;
+
+            top: 45%;
+            bottom: 45%;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        #next {
+            width: 40px;
+            height: 63px;
+            background: url(images/beijing.png) -40px 0px;
+            position: absolute;
+            top: 45%;
+            bottom: 45%;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        #prev:hover {
+            background: url(images/beijing.png) 0px -62px;
+        }
+
+        #next:hover {
+            background: url(images/beijing.png) -40px -62px;
+        }
+        .search > img{
+            position:relative;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+        }
+        .register > img{
+            position:relative;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+        }
+
+
+        body {
+            background: #f7f7f7;
+        }
+        /*body{*/
+        /*    background-image: url("assets/images/1.jpg");*/
+        /*    background-size: cover;*/
+        /*    background-repeat: no-repeat;*/
+        /*    !*background-position: center;*!*/
+        /*}*/
+
+
+        .btn{
+            width:10%;
+            height:50px;
+            background: #ffffff;
+            margin-left: 45%;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 50px;
+            border:1px solid black;
+            margin-top: 20px;
+
+        }
+        .btn:hover{
+            cursor: pointer;
+        }
+        footer > .content > a{
+            text-decoration: none;
+            color:black;
+        }
+        footer{
+            width:100%;
+            background-color: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+            overflow: hidden;
+            margin-top:20px;
+        }
+
+
+    </style>
+
+    <script>
+        var pathName = window.document.location.pathname;
+        var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+        $(function () {
+
+            var projectName = $("#path").attr("name");
+
+            var count1 = $("#specialcount").attr('name') * 50;
+            var count2 = $("#notcount").attr('name') * 50;
+            $(".special").hover(function () {
+                $(".special .itemBox").css("height",count1);
+            },function() {
+                $(".special .itemBox").css("height",0);
+            })
+
+            $(".noTheredity").hover(function () {
+                $(".noTheredity .itemBox").css("height",count2);
+            },function() {
+                $(".noTheredity .itemBox").css("height",0);
+            })
+            $(".advice").click(function () {
+                window.location.href=projectName + "/other";
+            })
+
+
+            $(".share").click(function () {
+                window.location.href=projectName +"/boke";
+            })
+            $(".search").click(function () {
+                alert("别点我");
+            })
+            $(".about").click(function () {
+                alert("随着现代化的不断发展，很多的人忘记了自己所在的地方的习俗和传说等，只记得春节、中秋节等一些放假的节日，以及西方的圣诞节等节日。为了让舟山人更好的了解到舟山的乡土文化习俗等，同时随着互联网的不断发展，越来越多的人选择在网上浏览信息，浏览网页。于是我们项目组决定实现一个关于舟山乡土文化的网站。用来宣传舟山的本地文化、习俗以及舟山传说。从而让更多的舟山人了解舟山乡土文化。同时使用网页的方式也可以让其他的地方的人直接在互联网上访问，从而去了解舟山乡土文化。也是对舟山乡土文化的继承和发展，对于舟山的非物质文化遗产也是很好的传承。");
+            })
+            $(".register").click(function () {
+                window.location.href=projectName +"/login";
+            })
+            $("#me").click(function () {
+                window.location.href=projectName +"/logout";
+            })
+            $(".main").click(function () {
+                window.location.href=projectName +"/index";
+            })
+            $(".btn").click(function () {
+                $('#table_fresh').load(projectName +"/random");
+            })
+        })
+    </script>
+</head>
+
+<body>
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+<input id="specialcount" type="hidden" th:name="${specialcount}">
+<input id="notcount" type="hidden" th:name="${notcount}">
+<nav>
+    <div class="main" style="text-align: center;line-height: 50px;">
+<img th:src="@{/images/1.png}" style="width: 100%; vertical-align: middle;">
+    </div>
+    <div class="special">
+        <h3>特色文化区</h3>
+        <div class="itemBox">
+            <a th:each="cur:${special}" th:href="${#request.getContextPath()}+'/detail/' + ${cur.id}" th:text="${cur.name}"></a>
+
+
+        </div>
+    </div>
+    <div class="noTheredity">
+        <h3>非遗传区</h3>
+        <div class="itemBox">
+            <a th:each="cur:${noTheredity}" th:href="${#request.getContextPath()}+'/detail/' + ${cur.id}" th:text="${cur.name}"></a>
+        </div>
+    </div>
+    <div class="share">
+        <h3>博客分享</h3>
+    </div>
+    <div class="advice">
+        <h3>友情推荐</h3>
+    </div>
+    <div class="about">
+        <h3>关于</h3>
+    </div>
+    <div class="search" >
+        <img  th:src="@{/images/aaa.png}" height="40%" />
+    </div>
+    <div class="register" >
+        <div shiro:haspermission="user:member" class="itemBox">
+            <a href="#">修改信息</a>
+            <a th:href="${#request.getContextPath()} + '/logout'">退出登陆</a>
+
+        </div>
+     <img shiro:guest th:src="@{/images/bbb.png}" height="40%" />
+     <img id="me" shiro:haspermission="user:member"th:src="${#request.getContextPath()} + ${logo}"  style="width:50%;border-radius: 50px;" />
+    </div>
+
+</nav>
+
+<div id="flash" >
+    <div id="prev"></div>
+    <div id="next"></div>
+    <ul id="play">
+        <li style="display: block;">
+            <img th:src="@{/image/1.jpg}" alt="" />
+        </li>
+        <li ><img th:src="@{/image/2.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/3.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/4.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/5.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/6.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/7.jpg}" alt="" /></li>
+        <li><img th:src="@{/image/8.jpg}" alt="" /></li>
+        <!--<img src="assets/image/3.jpg">-->
+    </ul>
+    <ul id="button">
+        <li>
+            <div style="background: #A10000;"></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+        </li>
+    </ul>
+</div>
+<h3 style="margin-left: 20px;">博客热门</h3>
+
+<hr>
+<div id="table_fresh" th:fragment="table_refresh" style="width: 100%;" >
+<div class="card" th:each="article:${articles}" style="max-height: 300px;overflow: hidden;" >
+    <div class="content">
+        <div class="time">
+            <i class="icon ion-ios-clock-outline"></i>
+            <span th:text="${article.time}"></span>
+        </div>
+        <div class="title">
+            <h3><span th:text="${article.title}"></span></h3>
+        </div>
+        <div class="des">
+            <span th:utext="${article.content}"></span>
+        </div>
+        <div class="status">
+            <i class="icon ion-ios-eye-outline"></i>     &nbsp;<span th:text="${article.count}"></span>&nbsp;&nbsp;<i class="icon ion-ios-chatbubble-outline"></i>&nbsp;<span th:text="${article.comments}"></span>&nbsp;  &nbsp;<i class="icon ion-android-person"></i>&nbsp; <span th:text="${article.authName}"></span>
+        </div>
+
+        <div class="more" >
+            <a th:href="${#request.getContextPath()}+'/luntan/' + ${article.id} +'/1'" target="_blank" style="text-decoration: none;font-size: 20px;color:black;">more...</a>
+        </div>
+    </div>
+    <img class="image"  th:src="@{/images/meizi1.jpg}">
+</div>
+</div>
+
+<div class="btn" style="overflow: hidden;" >
+    <h3>换一批</h3>
+</div>
+
+<footer>
+    <div class="content" align="center">
+        <a href="http://zjzs.wenming.cn/zswh/" target="_blank">舟山文明网</a> |
+
+        <a href="http://www.zhoushan.cn">舟山网</a> |
+
+        <a href="https://www.d1xz.net/wenhua/chengshi/zhoushanwenhua/">舟山文化</a> |
+
+        <a href="http://www.cseac.com/new/zs/">舟山海洋文化</a> |
+
+        <a href="http://www.zjfeiyi.cn/news_area/12.html">舟山非遗</a> |
+
+        <a href="http://shop.bytravel.cn/produce/ms/index380_list.html">舟山民俗</a> |
+
+        <a href="http://www.bytravel.cn/view/top10/index380.html">游在舟山</a>
+    </div>
+    <p align="center">
+
+        ©Copyright 2018 海盗侠科技公司版权所有 | 上海ICP备12438170号-4
+
+    </p>
+</footer>
+</body>
+
+</html>

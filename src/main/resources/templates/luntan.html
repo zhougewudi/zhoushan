@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>文化交流</title>
+</head>
+<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/luntan.css}" />
+<link rel="stylesheet" th:href="@{/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/plugins/code/prettify.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+
+<style>
+    .tijiao:hover{
+        cursor: pointer;
+    }
+    button:hover{
+        cursor: pointer;
+        background-color: skyblue;
+    }
+</style>
+<script>
+
+    var count = 2;
+
+
+
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id');
+    });
+    var options = {
+        cssPath : '/css/index.css',
+        filterMode : true
+    };
+    var editor = K.create('textarea[name="content"]', options);
+    // 取得HTML内容
+    html = editor.html();
+
+    // 同步数据后可以直接取得textarea的value
+    editor.sync();
+    html = document.getElementById('editor_id').value; // 原生API
+    html = K('#editor_id').val(); // KindEditor Node API
+    html = $('#editor_id').val(); // jQuery
+
+    // 设置HTML内容
+</script>
+<script type="text/javascript">
+    KindEditor.ready(function (K) {
+        var editor1 = K.create('textarea[name="article.content"]', {
+            cssPath: 'Resources/kindeditor/plugins/code/prettify.css',
+            resizeType: 1,
+            allowPreviewEmoticons:false,
+            allowImageUpload: true,
+            allowFileManager: false,
+            items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+            afterChange:function() {
+                K('.word_input').html(this.count('text'));
+                var input = this.count('text');
+                var remain = 1500 - input;
+                K('.word_remain').html(remain);
+            }
+        });
+        prettyPrint();
+    });
+</script>
+<body onload="nmd();">
+
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+<input type="hidden" id="articleId" th:value="${articleId}">
+ <div class="lz">
+     <div class="left">
+         <div class="head">
+             <img th:src="${#request.getContextPath()} + ${author.logopath}"  alt="" style="width: 100%;">
+         </div>
+         <div class="id" style="text-align: center;margin-top: 20px;">
+<span th:text="${author.username}"></span>
+         </div>
+     </div>
+     <div class="right">
+
+         <div class="title">
+             <div class="left1" >
+               <b th:text="'标题:  ' + ${article.title}"></b>
+             </div>
+             <div class="right1">
+                 当前第<span  th:text="${cur}"></span>,共<span id="all" th:name="${all}" th:text="${all}"></span>页&nbsp;&nbsp;跳转到第&nbsp;<input id="lll" type="text" style="width: 15px;">  页 <button style="height:21px;" onclick="caozuo();">确定</button>
+             </div>
+         </div>
+<!--         <div style="margin-right:5%;float: right;">沙发</div>-->
+<!--         <hr width="90%" align="center">-->
+         <div class="content">
+             <div style="width:90%;margin-top: 20px;font-size:15px;text-align: right;">楼主</div>
+             <hr width="90%" style="float: left;">
+             <div class="main" th:utext="${article.content}">
+
+             </div>
+
+             <div class="status">
+                 <div class="ll">
+                     <i class="icon ion-ios-clock-outline"></i>  <span th:text="${article.time}"></span>
+                 </div>
+                 <div class="rr">
+                     <i class="icon ion-ios-eye-outline"></i>&nbsp;<span th:text="${article.count}"></span>&nbsp;&nbsp;<i class="icon ion-ios-chatbubble-outline"></i></i>&nbsp;<span th:text="${article.comments}"></span>&nbsp;&nbsp;<i class="icon ion-android-person"></i>&nbsp; <span th:text="${article.authName}"></span>
+                 </div>
+
+             </div>
+             <div class="gxqm">
+                 <i class="icon ion-android-create"></i><span th:text="${author.gxqm}"></span>
+             </div>
+         </div>
+     </div>
+ </div>
+ <div class="hf" th:each="comment,stat:${comments}">
+     <div class="left">
+         <div class="head">
+             <img th:src="${#request.getContextPath()} + ${users[stat.index].logopath}" alt="" style="width: 100%;">
+         </div>
+         <div class="id" style="text-align: center;margin-top: 20px;">
+             <span th:text="${users[stat.index].username}"></span>
+         </div>
+     </div>
+     <div class="right">
+
+         <!--         <div style="margin-right:5%;float: right;">沙发</div>-->
+         <!--         <hr width="90%" align="center">-->
+         <div class="content">
+             <div style="width:90%;margin-top: 20px;font-size:15px;text-align: right;">
+                 <script>
+                     document.write(count + "楼");
+                     count++;
+                 </script>
+             </div>
+             <hr width="90%" style="float: left;">
+             <div class="main" id="main" th:utext="${comment.content}">
+             </div>
+
+             <div class="status">
+                 <div class="ll">
+                     <i class="icon ion-ios-clock-outline"></i>  发表于&nbsp;&nbsp;<span th:text="${comment.time}"></span>
+                 </div>
+                 <div class="rr">
+<!--                     <i class="icon ion-ios-eye-outline"></i>&nbsp;1111热度&nbsp;&nbsp;<i class="icon ion-ios-chatbubble-outline"></i></i>&nbsp;5条评论&nbsp;&nbsp;<i class="icon ion-ios-folder-outline"></i>&nbsp; 洲哥-->
+                 </div>
+
+             </div>
+             <div class="gxqm">
+                 <i class="icon ion-android-create"></i>  <span th:text="${users[stat.index].gxqm}"></span>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ <div shiro:haspermission="user:member" id="hello" style="width: 80%;height:auto;margin-left: 10%;margin-top:20px;">
+     <textarea id="editor_id" name="content" style="width:100%;height:300px;"></textarea>
+ </div>
+
+<div shiro:haspermission="user:member" class="tijiao" onclick="save();"  style="width: 14%;float:right;margin-right:10%;margin-top:20px;height:70px;background-color:#70a7ff;color:white;font-size: 20px;text-align: center;line-height: 70px;">
+提交回复
+</div>
+<div shiro:guest class="tijiao" onclick="denglu();"  style="width: 14%;float:right;margin-right:10%;margin-top:20px;height:70px;background-color:#70a7ff;color:white;font-size: 20px;text-align: center;line-height: 70px;">
+登陆后可评论
+</div>
+
+
+</body>
+<script>
+    var projectName = $("#path").attr("name");
+    function hello() {
+        var content = KE.util.getData("content");
+        alert(content);
+    }
+    function save(){
+//取得HTML内容?
+//同步数据后可以直接取得textarea的value?
+        var projectName = $("#path").attr("name");
+        editor.sync();
+        html=document.getElementById('editor_id').value;//原生API
+        // alert(html);
+
+        // alert($("#articleId").val());
+        $.ajax({
+            type:"post",
+            url:projectName +"/huifu",
+
+            data:{
+                html:html,
+                id:$("#articleId").val(),
+            },
+            success:function (data,msg) {
+
+                data = eval("(" + data + ")");
+                // alert(data);
+                if (data.success) {
+                    alert("回复成功");
+                    window.location.href=projectName +"/luntan/" + data.id+"/1";
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+
+
+    }
+    function denglu() {
+        var projectName = $("#path").attr("name");
+        window.location.href=projectName+
+            "/login"
+    }
+    function caozuo() {
+        var projectName = $("#path").attr("name");
+        var cur = parseInt($("#lll").val());
+        var all = parseInt($("#all").attr('name'));
+
+        if(!(typeof cur === 'number' && !isNaN(cur))){
+            alert("您输入的不是数字");
+        }else{
+            if(all < cur){
+                alert("您跳转的页数不合法，只能跳转至小于最大值")
+            }else if(cur <= 0){
+                alert("跳转的页数不合法");
+
+            }else{
+                window.location.href=projectName +"/luntan/"+$("#articleId").val()+"/"+$("#lll").val();
+            }
+        }
+
+    }
+</script>
+
+</body>
+</html>

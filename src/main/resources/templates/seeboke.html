@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>团队发来信息</title>
+</head>
+
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}" >
+<script type="text/javascript" th:src="@{/easyui/locale/easyui-lang-zh_CN.js}"></script>
+<link rel="stylesheet" id="caozuo" type="text/css" th:href="@{/easyui/themes/default/easyui.css}" >
+<link rel="stylesheet" th:href="@{/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/plugins/code/prettify.js}"></script>
+<body>
+
+<script>
+    var pathName = window.document.location.pathname;
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    var count = 1;
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id');
+    });
+    var options = {
+        cssPath : '/css/index.css',
+        filterMode : true
+    };
+    var editor = K.create('textarea[name="edit"]', options);
+    // // 取得HTML内容
+    // html = editor.html();
+    //
+    // // 同步数据后可以直接取得textarea的value
+    // editor.sync();
+    // html = document.getElementById('editor_id').value; // 原生API
+    // alert(html)
+    // html = K('#editor_id').val(); // KindEditor Node API
+    // html = $('#editor_id').val(); // jQuery
+
+    // 设置HTML内容
+</script>
+<script type="text/javascript">
+    KindEditor.ready(function (K) {
+        var editor1 = K.create('textarea[name="edit"]', {
+            cssPath: 'Resources/kindeditor/plugins/code/prettify.css',
+            resizeType: 1,
+            allowPreviewEmoticons:false,
+            allowImageUpload: true,
+            allowFileManager: false,
+            items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+            afterChange:function() {
+                K('.word_input').html(this.count('text'));
+                var input = this.count('text');
+                var remain = 1500 - input;
+                K('.word_remain').html(remain);
+            }
+        });
+        prettyPrint();
+    });
+</script>
+<table id="list"></table>
+
+<!-- 工具条 -->
+<div id="toolbar">
+    <a id="saveBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">添加</a>
+    <a id="editBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+    <a id="deleteBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+</div>
+
+<!-- 编辑窗口 -->
+<div id="editWin" class="easyui-window" data-options="title:'博客添加窗口',width:500,height:300,closed:true">
+    <form id="editForm" method="post">
+
+
+        <table>
+            <input id="id" type="hidden" name="id"/>
+            <input id="fuck" type="hidden" name="content"/>
+
+
+            <tr>
+                <td>博客类别</td>
+                <td><input type="text" name="kind" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>点击数</td>
+                <td><input type="text" name="count" class="easyui-numberbox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>内容</td>
+                <td>
+                    <textarea type="text" id="editor_id" name="edit" style="width:100%;height:100px;"  class="easyui-validatebox" data-options="required:true"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>点赞数</td>
+                <td><input type="text" name="good" class="easyui-numberbox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>作者id</td>
+                <td><input type="text" name="iswhose" class="easyui-numberbox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>标题</td>
+                <td><input type="text" name="title" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>创建时间</td>
+                <td><input type="text" name="time" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>评论数</td>
+                <td><input type="text" name="comments" class="easyui-numberbox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>作者名</td>
+                <td><input type="text" name="authName" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a id="save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+
+                </td>
+                <td>
+                    <a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">重置</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+
+</body>
+<script type="text/javascript" language="JavaScript" th:inline="none">
+    var pathName = window.document.location.pathname;
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    $(function(){
+        projectName = $("#path").attr("name");
+        $("#list").datagrid({
+            url:projectName +"/seeboke",
+            columns:[[
+                {field:"id",title:"博客id",width:100},
+                {field:"kind",title:"博客类别",width:100},
+                {field:"count",title:"点击数",width:100},
+                {field:"content",title:"内容",width:100},
+                {field:"good",title:"点赞数",width:50},
+                {field:"iswhose",title:"作者id",width:100},
+                {field:"title",title:"标题",width:100},
+                {field:"time",title:"创建时间",width:100},
+                {field:"comments",title:"评论数",width:100},
+                {field:"authName",title:"作者名",width:100}
+
+
+            ]],
+
+            pagination:true,
+            //工具条件
+            toolbar:"#toolbar"
+        });
+
+        //修改商品 -- 回显商品信息
+        $("#editBtn").click(function(){
+
+            //1.获取选择的商品
+            var rows = $("#list").datagrid("getSelections");
+
+            //判断一次只能搞一个
+            if(rows.length!=1){
+                $.messager.alert("提示","一次只能选择一行","warning");
+                return;
+            }
+
+            var row = rows[0];
+
+
+            $("#editForm").form("load",projectName+ "/getboke?id="+row.id);
+
+            $.ajax({
+                url:projectName + "/getboke?id=" + row.id,
+                type:"get",
+                success:function (data,msg) {
+                    data = eval("(" + data + ")");
+                    editor.html(data.content);
+
+                }
+            })
+
+            $("#editWin").window("open");
+        });
+
+
+        //点击添加按钮，弹出编辑窗口
+        $("#saveBtn").click(function(){
+            //打开窗口
+            editor.html('');
+            $("#editForm")[0].reset();
+            $("#id").val('');
+            $("#editWin").window("open");
+        });
+
+
+        //保存商品
+        $("#save").click(function(){
+
+            editor.sync();
+            html=document.getElementById('editor_id').value;//原生API
+
+            $("#fuck").val(html);
+
+            $("#editForm").form("submit",{
+                url:projectName+"/saveboke",
+                onSubmit:function(){
+                    //表单验证
+                    return $("#editForm").form("validate");
+                },
+                success:function(data){
+                    data = eval("("+data+")");
+                    if(data.success){
+
+                        //1.表单清空
+                        $("#editForm").form("clear");
+                        //2.关闭窗口
+                        $("#editWin").window("close");
+                        //3.刷新datagrid
+                        $("#list").datagrid("reload");
+
+                        $.messager.show({
+                            title:"提示",
+                            msg:"保存成功"
+                        });
+                    }else{
+                        $.messager.alert("提示","保存失败:"+data.msg,"error");
+                    }
+                }
+            });
+
+
+        });
+
+
+        //删除商品
+        $("#deleteBtn").click(function(){
+            //1.获取选择的商品
+            var rows = $("#list").datagrid("getSelections");
+
+            if(rows.length==0){
+                $.messager.alert("提示","至少选择一个商品","warning");
+                return;
+            }
+
+            //2.获取商品的id 格式： 字符串  1,2,3
+            var ids = new Array();
+            $(rows).each(function(i){
+                ids.push(rows[i].id);
+            });
+
+            ids = ids.join(",");
+
+            //3.发送商品id到后台进行删除
+            $.post(projectName+"/deleteboke",{"ids":ids},function(data){
+                if(data.success){
+                    //刷新datagrid
+                    $("#list").datagrid("reload");
+                    //提示
+                    $.messager.show({
+                        title:"提示",
+                        msg:"删除成功"
+                    });
+                }else{
+                    $.messager.alert("提示","删除失败:"+data.msg,"error");
+                }
+            },"json");
+
+        });
+    });
+</script>
+
+</html>

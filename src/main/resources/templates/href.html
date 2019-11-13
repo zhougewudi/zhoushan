@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>资源上传</title>
+</head>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}" >
+<script type="text/javascript" th:src="@{/easyui/locale/easyui-lang-zh_CN.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}" >
+<body>
+
+
+<table id="list"></table>
+
+<!-- 工具条 -->
+<div id="toolbar">
+    <a id="saveBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">添加</a>
+<!--    <a id="editBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>-->
+    <a id="deleteBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+</div>
+
+<div id="editWin" class="easyui-window" data-options="title:'超链接编辑窗口',width:400,height:300,closed:true">
+    <form id="editForm" method="post" enctype="multipart/form-data">
+
+
+        <table>
+
+
+            <tr>
+                <td>对应栏目id</td>
+                <td><input type="text" name="iswhose" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>链接地址</td>
+                <td><input type="text" name="content" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+            <tr>
+                <td>链接描述</td>
+                <td><input type="text" name="des" class="easyui-validatebox" data-options="required:true"/></td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <a id="save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                    <a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">重置</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+
+<script type="text/javascript" language="JavaScript" th:inline="none">
+    var pathName = window.document.location.pathname;
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    $(function(){
+projectName = $("#path").attr("name");
+        $("#list").datagrid({
+            url:projectName + "/getHrefs",
+            columns:[[
+
+                {field:"id",title:"资源id",width:50},
+                {field:"iswhose",title:"栏目id",width:50},
+                {field:"content",title:"链接地址",width:100},
+                {field:"des",title:"链接描述",width:100},
+
+            ]],
+
+            pagination:true,
+            //工具条件
+            toolbar:"#toolbar"
+        });
+
+
+
+
+        //点击添加按钮，弹出编辑窗口
+        $("#saveBtn").click(function(){
+            //打开窗口
+            $("#editForm")[0].reset();
+            $("#editForm").form("clear");
+            $("#editWin").window("open");
+        });
+
+
+        $("#save").click(function(){
+
+            $("#editForm").form("submit",{
+                url:projectName +"/href",
+                onSubmit:function(){
+                    //表单验证
+                    return $("#editForm").form("validate");
+                },
+                success:function(data){
+                    data = eval("("+data+")");
+                    if(data.success){
+
+                        alert(data.msg);
+                        //1.表单清空
+                        $("#editForm").form("clear");
+
+
+                        $.messager.show({
+                            title:"提示",
+                            msg:"保存成功"
+                        });
+                    }else{
+                        $.messager.alert("提示","保存失败:"+data.msg,"error");
+                    }
+                }
+            });
+
+
+        });
+
+        // //修改商品 -- 回显商品信息
+        // $("#editBtn").click(function(){
+        //
+        //     alert("别点我");
+        // });
+
+
+        $("#reset").click(function () {
+            $("#editForm")[0].reset();
+        })
+
+        //删除商品
+        $("#deleteBtn").click(function(){
+            //1.获取选择的商品
+            var rows = $("#list").datagrid("getSelections");
+
+            if(rows.length==0){
+                $.messager.alert("提示","至少选择一个商品","warning");
+                return;
+            }
+
+            //2.获取商品的id 格式： 字符串  1,2,3
+            var ids = new Array();
+            $(rows).each(function(i){
+                ids.push(rows[i].id);
+            });
+
+            ids = ids.join(",");
+
+            //3.发送商品id到后台进行删除
+            $.post(projectName + "/deleteHref",{"ids":ids},function(data){
+                if(data.success){
+                    //刷新datagrid
+                    $("#list").datagrid("reload");
+                    //提示
+                    $.messager.show({
+                        title:"提示",
+                        msg:"删除成功"
+                    });
+                }else{
+                    $.messager.alert("提示","删除失败:"+data.msg,"error");
+                }
+            },"json");
+
+        });
+    });
+</script>
+</html>

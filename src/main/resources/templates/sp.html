@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>hivideo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hivideo.css}" />
+    <script type="text/javascript" th:src="@{/js/hivideo.js}"></script>
+    <style type="text/css">
+        .main-wrap{
+            margin: 0 auto;
+            min-width: 320px;
+            max-width: 640px;
+        }
+
+        .main-wrap video{
+            width: 100%;
+        }
+
+        .hi-video-playIcon{
+            position: absolute;
+            z-index: 10000;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+            width: 100px;
+            height: 100px;
+            background: url(../images/play-big.png) no-repeat;
+            background-size: 100px 100px;
+            cursor: pointer;
+        }
+        .hi-video-controlbar .video-play .onBtn{
+            background: url(../images/play.png) no-repeat;
+        }
+
+        .hi-video-controlbar .video-play .offBtn{
+            background: url(../images/pause.png) no-repeat;
+        }
+        .hi-video-controlbar .video-mute .onBtn{
+            background: url(../images/volume.png);
+        }
+
+        .hi-video-controlbar .video-mute .offBtn{
+            background: url(../images/mute.png) no-repeat;
+        }
+        .hi-video-controlbar .video-fullscreen .onBtn{
+            background: url(../images/fullscreen.png) no-repeat;
+        }
+
+        .hi-video-controlbar .video-fullscreen .offBtn{
+            background: url(../images/fullscreen_off.png) no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrap">
+        <video ishivideo="true" autoplay="true" isrotate="false" autoHide="true">
+            <source th:src="${#request.getContextPath()} + ${video}" type="video/mp4">
+        </video>
+    </div>
+</body>
+</html>

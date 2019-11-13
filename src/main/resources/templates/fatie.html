@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>发帖</title>
+</head>
+<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/luntan.css}" />
+<link rel="stylesheet" th:href="@{/kindeditor/themes/default/default.css}" />
+<link rel="stylesheet" th:href="@{/kindeditor/plugins/code/prettify.css}" />
+<script charset="utf-8" th:src="@{/kindeditor/kindeditor-all-min.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/lang/zh-CN.js}"></script>
+<script charset="utf-8" th:src="@{/kindeditor/plugins/code/prettify.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+
+<style>
+    .tijiao:hover{
+        cursor: pointer;
+    }
+</style>
+<script>
+    var pathName = window.document.location.pathname;
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    var count = 1;
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id');
+    });
+    var options = {
+        cssPath : '/css/index.css',
+        filterMode : true
+    };
+    var editor = K.create('textarea[name="content"]', options);
+    // 取得HTML内容
+    html = editor.html();
+
+    // 同步数据后可以直接取得textarea的value
+    editor.sync();
+    html = document.getElementById('editor_id').value; // 原生API
+    html = K('#editor_id').val(); // KindEditor Node API
+    html = $('#editor_id').val(); // jQuery
+
+    // 设置HTML内容
+</script>
+<script type="text/javascript">
+    KindEditor.ready(function (K) {
+        var editor1 = K.create('textarea[name="article.content"]', {
+            cssPath: 'Resources/kindeditor/plugins/code/prettify.css',
+            resizeType: 1,
+            allowPreviewEmoticons:false,
+            allowImageUpload: true,
+            allowFileManager: false,
+            items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+            afterChange:function() {
+                K('.word_input').html(this.count('text'));
+                var input = this.count('text');
+                var remain = 1500 - input;
+                K('.word_remain').html(remain);
+            }
+        });
+        prettyPrint();
+    });
+</script>
+<body>
+<div style="margin-left: 10%;float: left;">选择分类：
+    <select id="kind" style="width: 200px;height:40px;font-size: 20px;margin-top: 0px;">
+     <option th:each="list:${lists}" th:text="${list.name}"></option>
+
+</select>
+</div>
+ <div style="margin-left: 10%;float: left;margin-bottom: 40px;">标题:<input id="title" style="width: 300px;height:40px;font-size: 30px;" type="text" maxlength="12" placeholder="此处填写标题">
+ </div>
+ <div id="hello" style="width: 80%;height:auto;margin-left: 10%;margin-top:40px;">
+     <textarea id="editor_id" name="content" style="width:100%;height:300px;"></textarea>
+ </div>
+
+<div class="tijiao" onclick="save();"  style="width: 14%;float:right;margin-right:45%;margin-top:20px;height:70px;background-color:#70a7ff;color:white;font-size: 20px;text-align: center;line-height: 70px;">
+提交
+</div>
+<input type="hidden" id="path" th:name="${#request.getContextPath()}">
+
+</body>
+<script>
+    function save(){
+        var projectName = $("#path").attr("name");
+        var title = $("#title").val();
+        if(title == null || title == ''){
+            alert('请填写标题');
+            return;
+        }
+
+        editor.sync();
+        html=document.getElementById('editor_id').value;//原生API
+
+        if(html == null || html == ''){
+            alert("请填写内容");
+            return;
+        }
+
+//取得HTML内容?
+//同步数据后可以直接取得textarea的value?
+//         editor.sync();
+//         html=document.getElementById('editor_id').value;//原生API
+//         alert(html);
+//         document.getElementById('main').innerHTML = html;
+        var obj = document.getElementById('kind'); //定位id
+
+        var index = obj.selectedIndex; // 选中索引
+
+        var text = obj.options[index].text; // 选中文本
+
+        var value = obj.options[index].value; // 选中值
+       $.ajax({
+           type:"post",
+           url:projectName + "/release",
+           data:{
+               title : title,
+               content : html,
+               kind : value,
+           },
+           success:function (data,msg) {
+               alert(data);
+               window.location.href=projectName + "/boke";
+           }
+       })
+    }
+</script>
+
+</body>
+</html>

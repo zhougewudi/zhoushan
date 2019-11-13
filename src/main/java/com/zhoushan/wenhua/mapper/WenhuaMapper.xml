@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoushan.wenhua.mapper.WenhuaMapper">
+
+<select id="selectWenhuaById" resultType="com.zhoushan.wenhua.model.Wenhua">
+    select * from wenhua where id = #{xxx}
+</select>
+
+    <select id="selectImagesById" resultType="com.zhoushan.wenhua.model.WenhuaImage">
+        select * from images where iswhose =#{xxx}
+    </select>
+
+    <select id="selectHrefsById" resultType="com.zhoushan.wenhua.model.Href">
+        select * from hrefs where iswhose =#{xxx}
+    </select>
+
+    <select id="selectAllArticles" resultType="com.zhoushan.wenhua.model.Article">
+        select * from article
+    </select>
+    <select id="selectUserByName" resultType="com.zhoushan.wenhua.model.User">
+        select * from users where username=#{xxx}
+    </select>
+    <insert id="insertIntoArticle">
+        insert into article(kind,content,count,good,iswhose,title,time,comments,authName)values
+        (#{article.kind},#{article.content},#{article.count},#{article.good},#{article.iswhose},#{article.title},#{article.time},#{article.comments},#{article.authName})
+    </insert>
+
+    <select id="selectArticleById" resultType="com.zhoushan.wenhua.model.Article">
+        select * from article where id = #{xxx}
+    </select>
+
+    <select id="selectCommentsById" resultType="com.zhoushan.wenhua.model.Comment">
+        select * from comments where towhose = #{xxx}
+    </select>
+    
+    <select id="selectUserById" resultType="com.zhoushan.wenhua.model.User">
+        select * from users where id = #{xxx}
+    </select>
+
+    <select id="selectArticlesByType" resultType="com.zhoushan.wenhua.model.Article">
+        select * from article where kind =#{xxx}
+    </select>
+
+    <select id="selectWenhuaDesc" resultType="com.zhoushan.wenhua.model.Wenhua">
+        select * from wenhua order by count desc;
+    </select>
+
+    <select id="selectAllImages" resultType="com.zhoushan.wenhua.model.WenhuaImage">
+        select * from images
+    </select>
+
+    <select id="selectWenhuaByTag" resultType="com.zhoushan.wenhua.model.Wenhua">
+        select * from wenhua where tag = #{xxx}
+    </select>
+
+    <select id="selectAllUsers" resultType="com.zhoushan.wenhua.model.User">
+        select * from users
+    </select>
+
+    <select id="selectAllHrefs" resultType="com.zhoushan.wenhua.model.Href">
+        select * from hrefs
+    </select>
+
+    <insert id="insertIntoComment">
+        insert into comments(iswhose,towhose,content,time)
+        value(#{comment.iswhose},#{comment.towhose},#{comment.content},#{comment.time})
+    </insert>
+
+    <insert id="insertIntoWenhua">
+        insert into wenhua(`count`,`desc`,`video`,`tag`,`name`,`logopath`)
+        values(#{wenhua.count},#{wenhua.desc},#{wenhua.video},#{wenhua.tag},#{wenhua.name},#{wenhua.logopath})
+    </insert>
+
+    <insert id="insertIntowenhuImage">
+        insert into images(iswhose,path,`desc`) values(#{wenhuaImage.iswhose},#{wenhuaImage.path},#{wenhuaImage.desc})
+    </insert>
+
+    <insert id="insertIntoUser">
+        insert into users(username,password,gxqm,perms,logopath)
+        values(#{user.username},#{user.password},#{user.gxqm},#{user.perms},#{user.logopath})
+    </insert>
+
+    <insert id="insertIntoHref">
+        insert into hrefs(iswhose,content,des)values(#{href.iswhose},#{href.content},#{href.des})
+    </insert>
+
+    <update id="updateCountById">
+        update article set count = count + 1 where id = #{xxx}
+    </update>
+
+    <update id="updataCommentsById">
+        update article set comments = comments + 1 where id =#{xxx}
+    </update>
+
+    <update id="updateUser">
+        update users
+        set username =#{user.username},
+        password = #{user.password},
+        gxqm = #{user.gxqm},
+        perms = #{user.perms},
+        logopath =#{user.logopath}
+        where id = #{user.id}
+    </update>
+
+    <update id="updateWenhuaById">
+        update wenhua set count = count + 1;
+    </update>
+
+    <update id="updateWenhua">
+        update wenhua set
+        `name` = #{wenhua.name},
+        `desc` = #{wenhua.desc},
+        `count` = #{wenhua.count},
+        video = #{wenhua.video},
+        logopath = #{wenhua.logopath},
+        tag = #{wenhua.tag}
+        where id =#{wenhua.id}
+    </update>
+
+    <update id="updateArticle">
+        update article set
+        kind = #{article.kind},
+        content = #{article.content},
+        `count` = #{article.count},
+        good = #{article.good},
+        iswhose = #{article.iswhose},
+        title = #{article.title},
+        `time` = #{article.time},
+        comments = #{article.comments},
+        authName = #{article.authName}
+
+        where id = #{article.id}
+
+    </update>
+
+    <delete id="deleteSpecialById">
+        delete from wenhua where id = #{xxx}
+    </delete>
+
+    <delete id="deleteWenhuImageById">
+        delete from images where id =#{xxx}
+    </delete>
+
+    <delete id="deleteHrefById">
+        delete from hrefs where id = #{xxx}
+    </delete>
+
+    <delete id="deleteBokeById">
+        delete from article where id = #{xxx}
+    </delete>
+
+    <delete id="deleteUserById">
+        delete from users where id = #{xxx}
+    </delete>
+
+</mapper>
